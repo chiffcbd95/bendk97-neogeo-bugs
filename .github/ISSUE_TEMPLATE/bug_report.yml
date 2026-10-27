@@ -1,0 +1,71 @@
+name: Bug report / Signaler un bug
+description: Report a bug in one of the Neo Geo ports / Signaler un bug dans un des portages Neo Geo
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing! / Merci de tester !
+        Please fill in as much as you can. A video or a screenshot helps a lot. / Remplis le maximum, une vidéo ou une capture aide beaucoup.
+  - type: dropdown
+    id: game
+    attributes:
+      label: Game / Jeu
+      options:
+        - Snow Bros
+        - Shadow of the Beast
+        - Knights of the Round
+        - Cosmo Gang the Video
+        - OutRun
+        - Sword of Sodan
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version (e.g. beta-0.2.3)
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform / Plateforme
+      options:
+        - MAME
+        - FBNeo
+        - Real AES
+        - Real MVS
+        - Neo Geo CD (real hardware)
+        - Neo Geo CD (emulator)
+        - MiSTer
+        - Flash cart (NeoSD, BackBit, DarkSoft...)
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: setup
+    attributes:
+      label: Setup details / Détails de ta config
+      description: Emulator version, console model, cart or flash cart model, BIOS used...
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens / Ce qui se passe
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected / Ce que tu attendais
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / Comment reproduire
+      description: Stage, moment, buttons pressed, secret menu options enabled...
+    validations:
+      required: true
+  - type: textarea
+    id: media
+    attributes:
+      label: Screenshot or video / Capture ou vidéo
+      description: Drag and drop here or paste a link. / Glisse ici ou colle un lien.
