@@ -2,7 +2,7 @@
 # GitHub Project. Setup (once):
 #   - secret PROJECT_TOKEN: a classic personal access token with the "project" and "repo" scopes
 #     (or a fine-grained token with Projects read and write on your account and Issues read on this repository);
-#   - variable PROJECT_NUMBER: the number of the Project (in its URL: github.com/users/<you>/projects/<number>).
+#   - variable PROJECT_NUMBER (optional, default 1): the number of the Project (in its URL: github.com/users/<you>/projects/<number>).
 # The label -> Status option mapping is below (STATUS_MAP); option names are matched without case.
 name: Project status from labels
 
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/github-script@v7
         env:
-          PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
+          PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER || '1' }}
           STATUS_MAP: |
             {"to test": "To test", "in progress": "In progress", "backlog": "Backlog", "fixed": "Done"}
         with:
