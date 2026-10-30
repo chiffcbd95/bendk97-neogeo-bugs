@@ -1,0 +1,73 @@
+# Copies the status label of an issue (backlog / in progress / to test / fixed) into the "Status" field of the
+# GitHub Project. Setup (once):
+#   - secret PROJECT_TOKEN: a classic personal access token with the "project" and "repo" scopes
+#     (or a fine-grained token with Projects read and write on your account and Issues read on this repository);
+#   - variable PROJECT_NUMBER (optional, default 1): the number of the Project (in its URL: github.com/users/<you>/projects/<number>).
+# The label -> Status option mapping is below (STATUS_MAP); option names are matched without case.
+name: Project status from labels
+
+on:
+  issues:
+    types: [opened, labeled, unlabeled, reopened, closed]
+  workflow_dispatch:
+
+permissions:
+  issues: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER || '1' }}
+          STATUS_MAP: |
+            {"to test": "To test", "in progress": "In progress", "backlog": "Backlog", "fixed": "Done"}
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const number = parseInt(process.env.PROJECT_NUMBER, 10);
+            if (!number) { core.setFailed('Set the PROJECT_NUMBER repository variable'); return; }
+            const map = JSON.parse(process.env.STATUS_MAP);
+            const order = Object.keys(map);                      // first label found wins
+
+            const q = await github.graphql(`query($owner: String!, $number: Int!) {
+              user(login: $owner) { projectV2(number: $number) { id
+                field(name: "Status") { ... on ProjectV2SingleSelectField { id options { id name } } } } } }`,
+              { owner, number });
+            const project = q.user.projectV2;
+            const field = project.field;
+            const option = name => field.options.find(o => o.name.toLowerCase() === name.toLowerCase());
+
+            let issues;
+            if (context.eventName === 'workflow_dispatch') {
+              issues = await github.paginate(github.rest.issues.listForRepo,
+                { owner, repo: context.repo.repo, state: 'all', per_page: 100 });
+              issues = issues.filter(i => !i.pull_request);
+            } else {
+              issues = [context.payload.issue];
+            }
+
+            for (const issue of issues) {
+              const labels = issue.labels.map(l => (typeof l === 'string' ? l : l.name).toLowerCase());
+              const label = order.find(l => labels.includes(l));
+              if (!label) { core.info(`#${issue.number}: no status label`); continue; }
+              const opt = option(map[label]);
+              if (!opt) { core.warning(`#${issue.number}: no "${map[label]}" option in the Status field`); continue; }
+
+              const r = await github.graphql(`query($id: ID!) { node(id: $id) { ... on Issue {
+                projectItems(first: 20) { nodes { id project { id } } } } } }`, { id: issue.node_id });
+              let item = r.node.projectItems.nodes.find(n => n.project.id === project.id);
+              if (!item) {
+                const a = await github.graphql(`mutation($p: ID!, $c: ID!) {
+                  addProjectV2ItemById(input: { projectId: $p, contentId: $c }) { item { id } } }`,
+                  { p: project.id, c: issue.node_id });
+                item = a.addProjectV2ItemById.item;
+              }
+              await github.graphql(`mutation($p: ID!, $i: ID!, $f: ID!, $o: String!) {
+                updateProjectV2ItemFieldValue(input: { projectId: $p, itemId: $i, fieldId: $f,
+                  value: { singleSelectOptionId: $o } }) { projectV2Item { id } } }`,
+                { p: project.id, i: item.id, f: field.id, o: opt.id });
+              core.info(`#${issue.number}: ${label} -> ${opt.name}`);
+            }
