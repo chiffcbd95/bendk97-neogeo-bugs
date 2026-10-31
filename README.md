@@ -1,6 +1,6 @@
 # BenDk97 Neo Geo ports: bug tracker
 
-Bug reports and feature requests for my Neo Geo ports: Snow Bros, Shadow of the Beast, Knights of the Round, Cosmo Gang the Video, OutRun and Sword of Sodan.
+Bug reports and feature requests for my Neo Geo ports: Snow Bros, Shadow of the Beast, Knights of the Round, Cosmo Gang the Video, OutRun, Sword of Sodan and R-Type.
 
 Downloads: https://bendk97.itch.io
 

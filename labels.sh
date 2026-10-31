@@ -9,6 +9,7 @@ mk kotr b60205 "Knights of the Round"
 mk cosmogang 0e8a16 "Cosmo Gang the Video"
 mk outrun d93f0b "OutRun"
 mk sodan fbca04 "Sword of Sodan"
+mk rtype 0052cc "R-Type"
 # Platforms
 mk mame c5def5 "Seen on MAME"
 mk fbneo c5def5 "Seen on FBNeo"
