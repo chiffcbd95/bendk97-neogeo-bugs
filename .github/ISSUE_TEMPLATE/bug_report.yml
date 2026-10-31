@@ -18,6 +18,7 @@ body:
         - Cosmo Gang the Video
         - OutRun
         - Sword of Sodan
+        - R-Type
     validations:
       required: true
   - type: input
