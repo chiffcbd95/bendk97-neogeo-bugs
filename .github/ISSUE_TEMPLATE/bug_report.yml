@@ -19,6 +19,7 @@ body:
         - OutRun
         - Sword of Sodan
         - R-Type
+        - Pole Position II
     validations:
       required: true
   - type: input
