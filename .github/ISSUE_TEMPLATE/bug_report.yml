@@ -20,6 +20,7 @@ body:
         - Sword of Sodan
         - R-Type
         - Pole Position II
+        - Sunset Riders
     validations:
       required: true
   - type: input

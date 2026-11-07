@@ -11,6 +11,7 @@ mk outrun d93f0b "OutRun"
 mk sodan fbca04 "Sword of Sodan"
 mk rtype 0052cc "R-Type"
 mk polepos2 e99695 "Pole Position II"
+mk ssriders c2410c "Sunset Riders"
 # Platforms
 mk mame c5def5 "Seen on MAME"
 mk fbneo c5def5 "Seen on FBNeo"
