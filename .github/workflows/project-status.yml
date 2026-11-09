@@ -18,7 +18,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         env:
           PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER || '1' }}
           STATUS_MAP: |
