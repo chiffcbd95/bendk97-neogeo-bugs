@@ -21,6 +21,7 @@ body:
         - R-Type
         - Pole Position II
         - Sunset Riders
+        - Mystic Riders
     validations:
       required: true
   - type: input
