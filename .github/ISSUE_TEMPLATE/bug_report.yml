@@ -22,6 +22,7 @@ body:
         - Pole Position II
         - Sunset Riders
         - Mystic Riders
+        - Joe & Mac Caveman Ninja
     validations:
       required: true
   - type: input

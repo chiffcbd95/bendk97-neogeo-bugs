@@ -13,6 +13,7 @@ mk rtype 0052cc "R-Type"
 mk polepos2 e99695 "Pole Position II"
 mk ssriders c2410c "Sunset Riders"
 mk mysticri 7c3aed "Mystic Riders"
+mk cninja 8b5a2b "Joe & Mac Caveman Ninja"
 # Platforms
 mk mame c5def5 "Seen on MAME"
 mk fbneo c5def5 "Seen on FBNeo"
