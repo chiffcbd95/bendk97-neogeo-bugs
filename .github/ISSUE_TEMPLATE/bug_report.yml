@@ -23,6 +23,7 @@ body:
         - Sunset Riders
         - Mystic Riders
         - Joe & Mac Caveman Ninja
+        - Tumble Pop
     validations:
       required: true
   - type: input

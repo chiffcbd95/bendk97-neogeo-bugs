@@ -1,6 +1,6 @@
 # BenDk97 Neo Geo ports: bug tracker
 
-Bug reports and feature requests for my Neo Geo ports: Snow Bros, Shadow of the Beast, Knights of the Round, Cosmo Gang the Video, OutRun, Sword of Sodan, R-Type, Pole Position II, Sunset Riders, Mystic Riders and Joe & Mac Caveman Ninja.
+Bug reports and feature requests for my Neo Geo ports: Snow Bros, Shadow of the Beast, Knights of the Round, Cosmo Gang the Video, OutRun, Sword of Sodan, R-Type, Pole Position II, Sunset Riders, Mystic Riders, Joe & Mac Caveman Ninja and Tumble Pop.
 
 Downloads: https://bendk97.itch.io
 
