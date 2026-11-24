@@ -1,0 +1,47 @@
+# Creates one GitHub Project per game ("<Game> bugs"), modelled on a view of the main project, and fills it
+# with that game's issues. Rollback deletes only the projects this workflow created (marked in their description).
+# Uses the same PROJECT_TOKEN secret as project-status.yml.
+name: Game projects
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: setup (create or update) or rollback (delete the game projects)
+        type: choice
+        options: [setup, rollback]
+        default: setup
+      view:
+        description: Number of the main project's view to copy
+        default: '3'
+      only:
+        description: Optional, comma-separated game labels (e.g. ssriders,kotr). Empty = all games
+        default: ''
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/github-script@v8
+        env:
+          PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER || '1' }}
+          MODE: ${{ inputs.mode }}
+          VIEW: ${{ inputs.view }}
+          ONLY: ${{ inputs.only }}
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const gp = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/game-projects.js`);
+            if (process.env.MODE === 'rollback') {
+              await gp.rollback({ github, context, core });
+            } else {
+              await gp.setup({ github, context, core,
+                templateNumber: parseInt(process.env.PROJECT_NUMBER, 10),
+                viewNumber: parseInt(process.env.VIEW, 10),
+                only: process.env.ONLY });
+            }
