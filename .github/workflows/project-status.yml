@@ -3,17 +3,18 @@
 #   - secret PROJECT_TOKEN: a classic personal access token with the "project" and "repo" scopes
 #     (or a fine-grained token with Projects read and write on your account and Issues read on this repository);
 #   - variable PROJECT_NUMBER (optional, default 1): the number of the main Project (in its URL: github.com/users/<you>/projects/<number>).
+# A new issue without a game label gets one from the "Game" field of the issue form.
 # The label -> Status option mapping is in .github/scripts/game-projects.js (STATUS_MAP); option names are matched without case.
 name: Project status from labels
 
 on:
   issues:
-    types: [opened, labeled, unlabeled, reopened, closed]
+    types: [opened, edited, labeled, unlabeled, reopened, closed]
   workflow_dispatch:
 
 permissions:
   contents: read
-  issues: read
+  issues: write
 
 jobs:
   sync:
