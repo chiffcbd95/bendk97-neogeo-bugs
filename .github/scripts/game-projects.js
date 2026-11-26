@@ -207,6 +207,25 @@ async function rollback({ github, context, core }) {
   if (!Object.keys(projects).length) core.info('nothing to delete');
 }
 
+// Game chosen in the issue form ("### Game" section) -> game label.
+function gameFromForm(body) {
+  const m = (body || '').match(/^###\s*Game\s*\n+([^\n]+)/m);
+  if (!m) return null;
+  const name = m[1].trim().toLowerCase();
+  return Object.keys(GAMES).find(l => GAMES[l].toLowerCase() === name) || null;
+}
+
+// Adds the game label of a new issue from its form, so it lands in the right game project.
+async function labelFromForm(github, context, core, issue) {
+  if (gameLabels(issue).length) return;
+  const label = gameFromForm(issue.body);
+  if (!label) { core.info(`#${issue.number}: no game in the form`); return; }
+  await github.rest.issues.addLabels({ owner: context.repo.owner, repo: context.repo.repo,
+    issue_number: issue.number, labels: [label] });
+  issue.labels.push({ name: label });
+  core.info(`#${issue.number}: label ${label} added from the form`);
+}
+
 // Label -> Status sync for the main project and the game projects.
 async function sync({ github, context, core, mainNumber }) {
   const login = context.repo.owner;
@@ -216,6 +235,7 @@ async function sync({ github, context, core, mainNumber }) {
       { owner: login, repo: context.repo.repo, state: 'all', per_page: 100 })).filter(i => !i.pull_request);
   } else {
     issues = [context.payload.issue];
+    if (['opened', 'edited'].includes(context.payload.action)) await labelFromForm(github, context, core, issues[0]);
   }
   const targets = [];
   if (mainNumber) {
@@ -233,4 +253,4 @@ async function sync({ github, context, core, mainNumber }) {
   }
 }
 
-module.exports = { setup, rollback, sync, cleanFilter, GAMES, MARK };
+module.exports = { setup, rollback, sync, cleanFilter, gameFromForm, GAMES, MARK };
