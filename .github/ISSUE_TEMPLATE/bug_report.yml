@@ -24,6 +24,7 @@ body:
         - Mystic Riders
         - Joe & Mac Caveman Ninja
         - Tumble Pop
+        - Pu·Li·Ru·La
     validations:
       required: true
   - type: input
