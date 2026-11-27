@@ -15,6 +15,7 @@ mk ssriders c2410c "Sunset Riders"
 mk mysticri 7c3aed "Mystic Riders"
 mk cninja 8b5a2b "Joe & Mac Caveman Ninja"
 mk tumblep e91e63 "Tumble Pop"
+mk pulirula 14b8a6 "Pu·Li·Ru·La"
 # Platforms
 mk mame c5def5 "Seen on MAME"
 mk fbneo c5def5 "Seen on FBNeo"
